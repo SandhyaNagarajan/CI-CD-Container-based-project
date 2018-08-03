@@ -7,6 +7,8 @@ Create platform independant continuous integration/ continous deployment(CI/CD) 
 
 # Purpose:
 
+Continuously integrate and deploy Docker container in Stagging and Production Server.
+
 Imagine I work in a ecommerce company. The website has nginx as front end,postgres as backend and flask app as application server. Developers use git and push their code to Github. 
 1. By CI/CD, the integration hell is minimised.
     "Integrate early and integrate often" - slogan for CI/CD practice.
@@ -17,8 +19,6 @@ Imagine I work in a ecommerce company. The website has nginx as front end,postgr
 4. By using IaC:
     Easy to set up the infrastructure for jenkins,Stagging and Production Server.
 
-
-Continuously integrate and deploy Docker container in Stagging and Production Server.
 
 # Technologies Suited for the challenge:
 
