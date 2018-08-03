@@ -31,4 +31,6 @@ Continuously integrate and deploy Docker container in Stagging and Production Se
 
 # Proposed Architecture:
 
+![Screenshot](IaCForCI:CDsetup.png)
+![Screenshot](Architecture.png)
 
