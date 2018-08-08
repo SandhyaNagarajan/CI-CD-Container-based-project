@@ -1,0 +1,23 @@
+node {
+
+// testing whether project gets checked out and where is it getting checked out
+// location: /var/lib/jenkins/workspace/<pipeline name
+  stage('SCM checkout') {
+    //git could take credentails with credentailsId and branch as well.
+    // now the project is in public repo so no need to put in credentails
+    git 'https://github.com/SandhyaNagarajan/CI-CD-Container-based-project/'
+  }
+
+  stage('test Server') {
+    // 08.08.2018 : checking out code from git and after entering into <webapp>
+    // run the script: Run_from_scratch.sh (which runs docker-compose for whole project)
+    def scm_checkout= "git clone https://github.com/SandhyaNagarajan/CI-CD-Container-based-project/"
+    sshagent(['aws_pem']) {
+    // some block
+      sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.14.79 ${scm_checkout}"
+
+    }
+  }
+
+
+}
