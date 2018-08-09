@@ -1,4 +1,5 @@
-version: '3'
+#08.09.2018:test server in aws only support version 2
+version: '2'
 services:
   db:
     image: "postgres:9.6.9"
@@ -22,7 +23,8 @@ services:
   nginx:
     image: "nginx:1.13.12"
     ports:
-      - "8080:80"
+      #08.09.2018:port 4040 is opened in the terraform already, so using that
+      - "4040:80"
     volumes:
       - ./conf.d:/etc/nginx/conf.d
     networks:
