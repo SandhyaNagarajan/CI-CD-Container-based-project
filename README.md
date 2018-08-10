@@ -1,7 +1,8 @@
 # CI-CD-Container-based-project
 Insight Data Engineering - 3 week sprint project.
 
-# Jenkins test 1
+# Jenkins test:
+testing jenkins auto build trigger on 08,10.2018
 
 # Project Idea:
 
@@ -11,7 +12,7 @@ Create platform independant continuous integration/ continous deployment(CI/CD) 
 
 Continuously integrate and deploy Docker container in Stagging and Production Server.
 
-Imagine I work in a ecommerce company. The website has nginx as front end,postgres as backend and flask app as application server. Developers use git and push their code to Github. 
+Imagine I work in a ecommerce company. The website has nginx as front end,postgres as backend and flask app as application server. Developers use git and push their code to Github.
 1. By CI/CD, the integration hell is minimised.
     "Integrate early and integrate often" - slogan for CI/CD practice.
 2. By using docker containers, the platform independance is achieved.
@@ -35,4 +36,3 @@ Imagine I work in a ecommerce company. The website has nginx as front end,postgr
 
 ![Screenshot](IaCForCICDsetup.png)
 ![Screenshot](Architecture.png)
-
