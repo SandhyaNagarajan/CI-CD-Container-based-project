@@ -1,5 +1,11 @@
 node {
 
+  stage('SCM checkout') {
+     //git could take credentails with credentailsId and branch as well.
+     // now the project is in public repo so no need to put in credentails
+     git 'https://github.com/SandhyaNagarajan/CI-CD-Container-based-project/'
+   }
+
   stage('test Server') {
     // 08.08.2018 : checking out code from git and after entering into <webapp>
     // run the script: Run_from_scratch.sh (which runs docker-compose for whole project)
