@@ -1,31 +1,39 @@
-node {
+ node {
 
-  stage('SCM checkout') {
-     //git could take credentails with credentailsId and branch as well.
-     // now the project is in public repo so no need to put in credentails
-     git 'https://github.com/SandhyaNagarajan/CI-CD-Container-based-project/'
-   }
+      stage('Received Web hook from Github') {
+          // 08.13.2018 : Refactoring the pipeline to smaller stages
+          echo 'Detecting web-hook... Starting testing in Test server'
+      }
 
-  stage('test Server') {
-    // 08.08.2018 : checking out code from git and after entering into <webapp>
-    // run the script: Run_from_scratch.sh (which runs docker-compose for whole project)
-    //08.09.2018:script to remove older flaskapp
-    sh "touch remove_old_flask.sh"
-    sh "echo cd /opt/services/flaskapp/src > remove_old_flask.sh"
-    sh "echo python -c  'import database; database.init_db()'>> remove_old_flask.sh"
-    //08.09.2018: created script checkout_run.sh to pass to ssh call to test server
-    sh "touch checkout_run.sh"
-    sh "echo git clone https://github.com/SandhyaNagarajan/CI-CD-Container-based-project/ > checkout_run.sh"
-    sh "echo cd CI-CD-Container-based-project/ecommerce-webapp >> checkout_run.sh"
-    sh "echo docker-compose up -d db >> checkout_run.sh"
-    sh "echo 'docker-compose run --rm flaskapp 'bash -s' < remove_old_flask.sh' >> checkout_run.sh"
-    sh "echo docker-compose up -d >> checkout_run.sh"
-    sshagent(['aws_pem']) {
-    // 08.09.2018: Enter the test server and clone the git and run the docker compose
-      sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.14.79 'bash -s' < checkout_run.sh"
+      stage ('SCM checkout in Test server') {
+            sh "touch checkout_run.sh"
+            //git could take credentails with credentailsId and branch as well.
+            // now the project is in public repo so no need to put in credentails
+            sh "echo git clone https://github.com/SandhyaNagarajan/CI-CD-Container-based-project/ > checkout_run.sh"
+            sh "echo cd CI-CD-Container-based-project/ecommerce-webapp >> checkout_run.sh"
+            }
+     stage('Initialising data base model ') {
+          //08.09.2018:script to remove older flaskapp
+          sh "touch remove_old_flask.sh"
+          sh "echo cd /opt/services/flaskapp/src > remove_old_flask.sh"
+          sh "echo python -c  'import database; database.init_db()'>> remove_old_flask.sh"
           }
+     stage ('Building docker container') {
+          // 08.08.2018 : checking out code from git and after entering into <webapp>
+          //08.09.2018: created script checkout_run.sh to pass to ssh call to test server
+          sh "echo docker-compose up -d db >> checkout_run.sh"
+          sh "echo 'docker-compose run --rm flaskapp 'bash -s' < remove_old_flask.sh' >> checkout_run.sh"
+     }
+     stage ('Integration test') {
+          echo 'Calling docker-compose to orchestor containers'
+          sh "echo docker-compose up -d >> checkout_run.sh"
+          sshagent(['aws_pem']) {
+          //08.09.2018: Enter the test server and clone the git and run the docker compose
+              sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.14.79 'bash -s' < checkout_run.sh"
+              }
 
-  }
+     }
+
 
 
 }
