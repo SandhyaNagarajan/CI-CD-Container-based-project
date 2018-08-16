@@ -3,6 +3,7 @@ Insight Data Engineering - 3 week sprint project.
 
 # Jenkins test:
 testing jenkins auto build trigger on 08,10.2018
+1..2..3..
 
 # Project Idea:
 
