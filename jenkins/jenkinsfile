@@ -16,28 +16,24 @@ agent any
             sh "touch checkout_run.sh"
             //git could take credentails with credentailsId and branch as well.
             // now the project is in public repo so no need to put in credentails
-            sh "echo git clone https://github.com/SandhyaNagarajan/CI-CD-Container-based-project/ > checkout_run.sh"
+            //08.16.2018 : changed the clone from master to Feature branch
+            sh "echo git clone -b Feature https://github.com/SandhyaNagarajan/CI-CD-Container-based-project/ > checkout_run.sh"
             sh "echo cd CI-CD-Container-based-project/ecommerce-webapp >> checkout_run.sh"
             }
           }
-        stage('Initialising data base model ') {
-          steps {
-            //08.09.2018:script to remove older flaskapp
-            sh "touch remove_old_flask.sh"
-            sh "echo cd /opt/services/flaskapp/src > remove_old_flask.sh"
-            sh "echo python -c  'import database; database.init_db()'>> remove_old_flask.sh"
-            }
-        }
         stage ('Building docker container') {
           steps {
             // 08.08.2018 : checking out code from git and after entering into <webapp>
             //08.09.2018: created script checkout_run.sh to pass to ssh call to test server
-
+            //08.09.2018:script to remove older flaskapp
+            sh "touch remove_old_flask.sh"
+            sh "echo cd /opt/services/flaskapp/src > remove_old_flask.sh"
+            sh "echo python -c  'import database; database.init_db()'>> remove_old_flask.sh"
             sh "echo docker-compose up -d db >> checkout_run.sh"
             sh "echo 'docker-compose run --rm flaskapp 'bash -s' < remove_old_flask.sh' >> checkout_run.sh"
             }
           }
-        stage ('Integration test') {
+        stage ('Integration test: Docker compose') {
           steps {
             echo 'Calling docker-compose to orchestor containers'
             sh "echo docker-compose up -d >> checkout_run.sh"
@@ -45,24 +41,34 @@ agent any
                 //08.09.2018: Enter the test server and clone the git and run the docker compose
                 sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.14.79 'bash -s' < checkout_run.sh"
               }
-              }
-              post {
-                success {
-                checkout([$class: 'GitSCM',
-                 branches: [[name: '*/Feature']],
-                 doGenerateSubmoduleConfigurations: false,
-                 extensions: [[$class: 'PreBuildMerge',
-                  options: [mergeRemote: 'origin',
-                   mergeTarget: 'master']]],
-                   submoduleCfg: [],
-                   userRemoteConfigs: [[name: 'origin',
-                    refspec: '+refs/heads/master:refs/remotes/origin/Feature',
-                    url: 'https://github.com/SandhyaNagarajan/CI-CD-Container-based-project']]])
-                cleanWs()
+          }
+            }
+      }
+      // 08.16.2018: created merge action when the build is successful
+      post  {
+            always {
+              // Let's wipe out the workspace before we finish!
+              sshagent(['aws_pem']) {
+                  sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.14.79 rm -r CI-CD-Container-based-project"
                   }
               }
+
+            success ('Merging Feature to Master') {
+                      echo 'build and tests are successful, merging feature branch to master branch'
+                      checkout([$class: 'GitSCM',
+                       branches: [[name: '*/Feature']],
+                       doGenerateSubmoduleConfigurations: false,
+                       extensions: [[$class: 'PreBuildMerge',
+                        options: [mergeRemote: 'origin',
+                         mergeTarget: 'master']]],
+                         submoduleCfg: [],
+                         userRemoteConfigs: [[name: 'origin',
+                          refspec: '+refs/heads/master:refs/remotes/origin/Feature',
+                          url: 'https://github.com/SandhyaNagarajan/CI-CD-Container-based-project']]])
+
+              }
           }
-          }
+
 
 
 }
