@@ -2,6 +2,18 @@ pipeline {
 agent any
     stages {
 
+        stage ('SCM checkout in jenkins'){
+              steps {
+            //06.18.2018: Setting up jenkinsfile pipeline as code
+            checkout([$class: 'GitSCM', branches: [[name: '*/Feature']],
+              doGenerateSubmoduleConfigurations: false,
+              extensions: [],
+              submoduleCfg: [],
+              userRemoteConfigs: [[url: 'https://github.com/SandhyaNagarajan/CI-CD-Container-based-project.git']]])
+
+              }
+        }
+
         stage('Received Web hook from Github') {
           steps {
             // 08.13.2018 : Refactoring the pipeline to smaller stages
