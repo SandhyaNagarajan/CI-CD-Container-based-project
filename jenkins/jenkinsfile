@@ -14,10 +14,10 @@ agent any
               }
         }
 
-        stage('Received Web hook from Github') {
+        stage('checking for infrastructure updates') {
           steps {
-            // 08.13.2018 : Refactoring the pipeline to smaller stages
-            echo 'Detecting web-hook... Starting testing in Test server'
+            // 08.18.2018 : Running terraform scripts to update any infrastructure changes
+            sh "terraform apply"
             }
         }
 
