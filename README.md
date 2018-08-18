@@ -4,6 +4,7 @@ Insight Data Engineering - 3 week sprint project.
 # Jenkins test:
 testing jenkins auto build trigger on 08,10.2018
 1..2..3..
+06.18.2018, testing webhook from feature branch
 
 # Project Idea:
 
