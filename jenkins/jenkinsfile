@@ -17,7 +17,7 @@ agent any
         stage('checking for infrastructure updates') {
           steps {
             // 08.18.2018 : Running terraform scripts to update any infrastructure changes
-            sh "cd /var/lib/jenkins/workspace/feature-branch-pipeline/terraform |terraform plan"
+            //sh "cd /var/lib/jenkins/workspace/feature-branch-pipeline/terraform |terraform plan"
 
             }
         }
