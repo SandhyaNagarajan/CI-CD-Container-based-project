@@ -14,13 +14,13 @@ agent any
               }
         }
 
-        stage('checking for infrastructure updates') {
-          steps {
+        //stage('checking for infrastructure updates') {
+          //steps {
             // 08.18.2018 : Running terraform scripts to update any infrastructure changes
             //sh "cd /var/lib/jenkins/workspace/feature-branch-pipeline/terraform |terraform plan"
 
-            }
-        }
+            //}
+        //}
 
         // 08.13.2018 : Refactoring the pipeline to smaller stages
 
