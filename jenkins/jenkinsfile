@@ -14,13 +14,13 @@ agent any
               }
         }
 
-        //stage('checking for infrastructure updates') {
-          //steps {
+        stage('checking for infrastructure updates') {
+          steps {
             // 08.18.2018 : Running terraform scripts to update any infrastructure changes
-            //sh "cd /var/lib/jenkins/workspace/feature-branch-pipeline/terraform |terraform plan"
+            sh "cd /var/lib/jenkins/workspace/feature-branch-pipeline/terraform;echo $(pwd);terraform plan"
 
-            //}
-        //}
+            }
+        }
 
         // 08.13.2018 : Refactoring the pipeline to smaller stages
 
@@ -61,10 +61,10 @@ agent any
       post  {
             always {
               // Let's wipe out the workspace before we finish!
-              sshagent(['aws_pem']) {
-                  sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.14.79 rm -r CI-CD-Container-based-project"
-                  }
-              }
+              //sshagent(['aws_pem']) {
+                //  sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.14.79 rm -r CI-CD-Container-based-project"
+                  //}
+              //}
 
             success ('Merging Feature to Master') {
                       echo 'build and tests are successful, merging feature branch to master branch'
