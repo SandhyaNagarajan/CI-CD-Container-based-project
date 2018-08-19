@@ -59,7 +59,7 @@ agent any
       }
       // 08.16.2018: created merge action when the build is successful
       post  {
-            always {
+            //always {
               // Let's wipe out the workspace before we finish!
               //sshagent(['aws_pem']) {
                 //  sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.14.79 rm -r CI-CD-Container-based-project"
