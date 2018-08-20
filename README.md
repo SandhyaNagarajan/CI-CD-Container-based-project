@@ -6,7 +6,7 @@ testing jenkins auto build trigger on 08,10.2018
 1..2..3..
 06.18.2018, testing webhook from feature branch
 testing again after setting up webhook fully again
-testing jenkins webhook on 08.19.2018 for demo video..
+08.19.2018: testing jenkins webhook on 08.19.2018 for demo video..
 # Project Idea:
 
 Create platform independant continuous integration/ continous deployment(CI/CD) pipeline on aws ec2.
